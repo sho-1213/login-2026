@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>コメント機能</title>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .comment-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .comment {
+      background: white;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>小久保翔太を褒めたたえるためのコメント欄</h1>
+
+  <div class="comment-box">
+    <input type="text" id="commentInput" placeholder="コメントを入力">
+    <button onclick="addComment()">投稿</button>
+  </div>
+
+  <div id="commentList"></div>
+
+  <script>
+    let comments = JSON.parse(localStorage.getItem("comments")) || [];
+
+    function saveComments() {
+      localStorage.setItem("comments", JSON.stringify(comments));
+    }
+
+    function renderComments() {
+      const list = document.getElementById("commentList");
+      list.innerHTML = "";
+
+      comments.forEach((comment) => {
+        const div = document.createElement("div");
+        div.className = "comment";
+        div.textContent = comment;
+
+        list.appendChild(div);
+      });
+    }
+
+    function addComment() {
+      const input = document.getElementById("commentInput");
+      const text = input.value.trim();
+
+      if (text === "") {
+        alert("コメントを入力してください");
+        return;
+      }
+
+      comments.push(text);
+      saveComments();
+      renderComments();
+
+      input.value = "";
+    }
+
+    renderComments();
+  </script>
+
+</body>
+</html>
